@@ -30,6 +30,10 @@ jobs:
       - name: publish to oci registry
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io --username ${{ github.repository_owner }} --password-stdin
+          echo "In"
+          pwd
+          echo "Has"
+          ls
           helm package ${{ github.workspace }}/
           package=`ls -t questdb-*.tgz | head -n 1`
           helm push "${package}" oci://${{ env.GCR_IMAGE }}
