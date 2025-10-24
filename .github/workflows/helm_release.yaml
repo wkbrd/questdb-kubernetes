@@ -34,6 +34,7 @@ jobs:
           pwd
           echo "Has"
           ls
+          echo "WS=${{ github.workspace }}/"
           helm package ${{ github.workspace }}/
           package=`ls -t questdb-*.tgz | head -n 1`
           helm push "${package}" oci://${{ env.GCR_IMAGE }}
