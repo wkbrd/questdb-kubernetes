@@ -54,30 +54,32 @@ jobs:
 
       - name: Update GitHub Pages helm repo
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # disabled for wkbrd
+          
+          # git config user.name "github-actions[bot]"
+          # git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          REPO_DIR=$(mktemp -d)
-          git fetch origin repo:repo
-          git worktree add "$REPO_DIR" repo
+          # REPO_DIR=$(mktemp -d)
+          # git fetch origin repo:repo
+          # git worktree add "$REPO_DIR" repo
 
-          mkdir -p "$REPO_DIR/docs"
-          cp ./packaged/questdb-${{ steps.version.outputs.version }}.tgz "$REPO_DIR/docs/"
+          # mkdir -p "$REPO_DIR/docs"
+          # cp ./packaged/questdb-${{ steps.version.outputs.version }}.tgz "$REPO_DIR/docs/"
 
-          if [ -f "$REPO_DIR/docs/index.yaml" ]; then
-            helm repo index \
-              --url "${{ env.HELM_REPO_URL }}" \
-              --merge "$REPO_DIR/docs/index.yaml" \
-              ./packaged
-          else
-            helm repo index \
-              --url "${{ env.HELM_REPO_URL }}" \
-              ./packaged
-          fi
+          # if [ -f "$REPO_DIR/docs/index.yaml" ]; then
+          #   helm repo index \
+          #     --url "${{ env.HELM_REPO_URL }}" \
+          #     --merge "$REPO_DIR/docs/index.yaml" \
+          #     ./packaged
+          # else
+          #   helm repo index \
+          #     --url "${{ env.HELM_REPO_URL }}" \
+          #     ./packaged
+          # fi
 
-          cp ./packaged/index.yaml "$REPO_DIR/docs/index.yaml"
+          # cp ./packaged/index.yaml "$REPO_DIR/docs/index.yaml"
 
-          cd "$REPO_DIR"
-          git add docs/index.yaml "docs/questdb-${{ steps.version.outputs.version }}.tgz"
-          git commit -m "Release chart questdb-${{ steps.version.outputs.version }}"
-          # disabled for wkbrd: git push origin repo
+          # cd "$REPO_DIR"
+          # git add docs/index.yaml "docs/questdb-${{ steps.version.outputs.version }}.tgz"
+          # git commit -m "Release chart questdb-${{ steps.version.outputs.version }}"
+          # git push origin repo
