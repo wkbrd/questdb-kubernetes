@@ -80,4 +80,4 @@ jobs:
           cd "$REPO_DIR"
           git add docs/index.yaml "docs/questdb-${{ steps.version.outputs.version }}.tgz"
           git commit -m "Release chart questdb-${{ steps.version.outputs.version }}"
-          git push origin repo
+          # disabled for wkbrd: git push origin repo
