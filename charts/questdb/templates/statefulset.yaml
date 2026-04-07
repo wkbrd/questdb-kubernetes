@@ -40,10 +40,17 @@ spec:
             {{- include "generateSecurityContext" . | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.command }}
+          command: {{ .Values.command | toYaml | nindent 10 }}
+          {{- end }}
           env:
           {{- range $key, $value := .Values.questdb.env }}
             - name: {{ $key }}
               value: "{{ $value }}"
+          {{- end }}
+          {{- range .Values.questdb.secretFiles }}
+            - name: {{ include "questdb.secretFileEnvVar" .property }}
+              value: "/run/secrets/{{ .secretKey }}"
           {{- end }}
           {{- if .Values.questdb.envFrom }}
           envFrom:
@@ -60,6 +67,12 @@ spec:
             mountPath: {{ .Values.questdb.dataDir }}
           - name: config-mount
             mountPath: {{ .Values.questdb.dataDir }}/conf
+          {{- range .Values.questdb.secretFiles }}
+          - name: secret-{{ .secretKey }}
+            mountPath: /run/secrets/{{ .secretKey }}
+            subPath: {{ .secretKey }}
+            readOnly: true
+          {{- end }}
           {{- if .Values.extraVolumeMounts }}
             {{ toYaml .Values.extraVolumeMounts | nindent 10 }}
           {{- end }}
@@ -191,6 +204,11 @@ spec:
           configMap:
             name: {{ include "questdb.fullname" . }}
           {{- end }}
+        {{- end }}
+        {{- range .Values.questdb.secretFiles }}
+        - name: secret-{{ .secretKey }}
+          secret:
+            secretName: {{ .secretName }}
         {{- end }}
         - name: migration-scripts
           configMap:
