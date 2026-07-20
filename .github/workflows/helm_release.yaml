@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -40,7 +40,7 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Install Helm
-        uses: Azure/setup-helm@v4.2.0
+        uses: Azure/setup-helm@v5.0.1
         with:
           version: ${{ env.HELM_VERSION }}
 
