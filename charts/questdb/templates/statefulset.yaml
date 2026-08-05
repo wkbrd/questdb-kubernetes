@@ -60,9 +60,9 @@ spec:
           - name: tmpfs-tmp
             mountPath: /tmp
           - name: tmpfs-questdb-import
-            mountPath: /var/lib/questdb/import
+            mountPath: {{ .Values.questdb.dataDir }}/import
           - name: tmpfs-questdb-public
-            mountPath: /var/lib/questdb/public
+            mountPath: {{ .Values.questdb.dataDir }}/public
           - name: {{ include "questdb.fullname" . }}
             mountPath: {{ .Values.questdb.dataDir }}
           - name: config-mount
